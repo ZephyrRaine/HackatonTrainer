@@ -37,7 +37,7 @@ public class Shoot : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
+        if ((Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) && lastSphere != null)
         {
             RaycastHit hit;
             Ray ray = camera.ViewportPointToRay(Vector3.one*0.5f);
@@ -71,7 +71,7 @@ public class Shoot : MonoBehaviour
 //here backslash is must to tell that colon is
 //not the part of format, it just a character that we want in output
         string str = time .ToString(@"hh\:mm\:ss\:fff");
-        timerText.text = str;
+     //   timerText.text = str;
     }
 
 }
