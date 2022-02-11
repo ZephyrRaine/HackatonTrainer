@@ -17,6 +17,7 @@ public class Shoot : MonoBehaviour
     private int killedSphere;
     [SerializeField] private TMP_Text ballsCounter;
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text FeedbackText;
     [SerializeField] Bounds zoneSpawn;
     public static Vector3 RandomPointInBounds(Bounds bounds)
     {
@@ -37,12 +38,13 @@ public class Shoot : MonoBehaviour
         lastSphere = Instantiate(spherePrefab, pos, Quaternion.identity);
         instantiatedSpheres++;
         UpdateGUI();
+        FeedbackText.enabled = false;
     }
 
     void Update()
     {
         timer += Time.deltaTime;
-        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
+        if ((Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) && lastSphere != null)
         {
             RaycastHit hit;
             Ray ray = camera.ViewportPointToRay(Vector3.one*0.5f);
@@ -57,11 +59,15 @@ public class Shoot : MonoBehaviour
                 Invoke(nameof(SpawnNewsphere), 0.3f);
                 //  SpawnNewsphere();
                 // Do something with the object that was hit by the raycast.
+                FeedbackText.text = "Bravo !";
+                FeedbackText.enabled = true;
             }
             else
             {
                 Destroy(lastSphere);
                 Invoke(nameof(SpawnNewsphere), 0.3f);
+                FeedbackText.text = "Essaie encore !";
+                FeedbackText.enabled = true;
             }
         }
 
@@ -83,7 +89,7 @@ public class Shoot : MonoBehaviour
     {
         var c = Color.red;
         c.a = 0.25f;
-        Gizmos.color = c;
+        Gizmos.color = c;   
         Gizmos.DrawCube(zoneSpawn.center, zoneSpawn.size);
     }
 
