@@ -11,11 +11,21 @@ public class Shoot : MonoBehaviour
     public Camera camera;
     [FormerlySerializedAs("sphere")] public GameObject spherePrefab;
     private GameObject lastSphere;
+    private GameObject Zone;
     float timer;
     private int instantiatedSpheres;
     private int killedSphere;
     [SerializeField] private TMP_Text ballsCounter;
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] Bounds zoneSpawn;
+    public static Vector3 RandomPointInBounds(Bounds bounds)
+    {
+        return new Vector3(
+            Random.Range(bounds.min.x, bounds.max.x),
+            Random.Range(bounds.min.y, bounds.max.y),
+            Random.Range(bounds.min.z, bounds.max.z)
+        );
+    }
     private void Awake()
     {
         Invoke(nameof(SpawnNewsphere), 0.3f);
@@ -23,13 +33,8 @@ public class Shoot : MonoBehaviour
 
     void SpawnNewsphere()
     {
-        float posX = Random.Range(-6f, 6f);
-        Debug.Log(posX);
-        float posY = Random.Range(-2f, 2f);
-        Debug.Log(posX);
-        float posZ = Random.Range(1f, 6f);
-        Debug.Log(posX);
-        lastSphere = Instantiate(spherePrefab, new Vector3(posX, posY, posZ), Quaternion.identity);
+        Vector3 pos = RandomPointInBounds(zoneSpawn);
+        lastSphere = Instantiate(spherePrefab, pos, Quaternion.identity);
         instantiatedSpheres++;
         UpdateGUI();
     }
@@ -71,7 +76,15 @@ public class Shoot : MonoBehaviour
 //here backslash is must to tell that colon is
 //not the part of format, it just a character that we want in output
         string str = time .ToString(@"hh\:mm\:ss\:fff");
-        timerText.text = str;
+     //   timerText.text = str;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var c = Color.red;
+        c.a = 0.25f;
+        Gizmos.color = c;
+        Gizmos.DrawCube(zoneSpawn.center, zoneSpawn.size);
     }
 
 }
