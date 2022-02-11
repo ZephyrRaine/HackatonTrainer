@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,11 @@ public class MouseLook : MonoBehaviour
     public float maximumY = 60F;
 
     float rotationY = 0F;
+
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+    }
 
     float GetMaxVertical()
     {
