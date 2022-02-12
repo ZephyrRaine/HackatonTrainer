@@ -10,6 +10,8 @@ public class MovingSphere : MonoBehaviour
     [SerializeField] Bounds b;
     private Vector3 target;
     [SerializeField] private float speed;
+    [SerializeField] private float rotSpeed;
+
     public static Vector3 RandomPointInBounds(Bounds bounds) {
         return new Vector3(
             Random.Range(bounds.min.x, bounds.max.x),
@@ -29,6 +31,13 @@ public class MovingSphere : MonoBehaviour
         c.a = 0.5f;
         Gizmos.color = c;
         Gizmos.DrawCube(b.center, b.size);
+    }
+
+    private void Update()
+    {
+        Vector3 localEulerAngles = transform.localEulerAngles;
+        localEulerAngles.y += Time.deltaTime * rotSpeed;
+        transform.localEulerAngles = localEulerAngles;
     }
 
     private void FixedUpdate()

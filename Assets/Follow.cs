@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Follow : MonoBehaviour
 {
     public Camera camera;
     public int score;
+    [SerializeField] private Image cursor;
 
     [SerializeField] private TMP_Text scoreText;
     private void Awake()
@@ -24,10 +26,14 @@ public class Follow : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             score++;
+            cursor.color = Color.green;
             //  SpawnNewsphere();
             // Do something with the object that was hit by the raycast.
         }
-
+        else
+        {
+            cursor.color = Color.red;
+        }
         UpdateGUI();
     }
     
